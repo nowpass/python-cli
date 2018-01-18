@@ -23,14 +23,17 @@ class Engine:
     """
     Logger
     """
+
     def __init__(self, logger, main_config):
         self._logger = logger
         self._main_config = main_config
         self._config = main_config.get_config()
+        self._headers = {'api-key': self._config['API']['api_key']}
 
     """
     Add an Element (TODO move input to own logic)
     """
+
     def add(self, args):
         print('Kind of Element you want to add:')
 
@@ -81,6 +84,7 @@ class Engine:
     """
     Get the List items (TODO optimize)
     """
+
     def list(self, args):
         get_url = self._config['API']['url'] + self.GET_ELEMENTS
 
@@ -102,39 +106,8 @@ class Engine:
     def delete(self, args):
         print('TODO')
 
-    def _login(self):
-        payload = {
-            'emailAddress': self._config['API']['username'],
-            'password': self._config['API']['password']
-        }
-
-        self._logger.debug('Logging in at ' + self._config['API']['url'] + self.PUT_LOGIN)
-
-        r = requests.put(self._config['API']['url'] + self.PUT_LOGIN, json=payload)
-
-        self._logger.debug('Login response ' + str(r.status_code) + ' ' + r.text)
-
-        # Should be OK
-        if r.status_code != 200:
-            raise Exception('Invalid Login / Login failed. Response Text: ' + r.text)
-
-        sid = r.cookies['sails.sid']
-
-        self._config['Cookie']['sid'] = "" + sid
-
-        self._main_config.store()
-
     def _request_elements(self, args, get_url, show_passwords=False):
-        jar = requests.cookies.RequestsCookieJar()
-
-        jar.set('sails.sid', self._config['Cookie']['sid'])
-        r = requests.get(get_url, cookies=jar)
-
-        # Our cookie expired, Login and start again
-        if r.status_code == 401:
-            self._login()
-            # TODO fix right method - called by multiple
-            return self.list(args)
+        r = requests.get(get_url, headers=self._headers)
 
         if r.status_code != 200:
             raise Exception('Failed to retrieve Elements (Status ' + str(r.status_code) + ')\nError: ' + r.text)
@@ -178,18 +151,11 @@ class Engine:
     """
     Store an Element to the API (TODO outsource)
     """
+
     def _post_element(self, payload):
         self._logger.debug('Saving new Element at ' + self._config['API']['url'] + self.POST_ELEMENT)
 
-        jar = requests.cookies.RequestsCookieJar()
-        jar.set('sails.sid', self._config['Cookie']['sid'])
-
-        r = requests.post(self._config['API']['url'] + self.POST_ELEMENT, json=payload, cookies=jar)
-
-        # Our cookie expired, Login and start again
-        if r.status_code == 401:
-            self._login()
-            return self._post_element(payload)
+        r = requests.post(self._config['API']['url'] + self.POST_ELEMENT, json=payload, headers=self._headers)
 
         if r.status_code != 200:
             raise Exception('Failed to save Element (Status ' + str(r.status_code) + ')\nError: ' + r.text)

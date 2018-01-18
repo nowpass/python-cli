@@ -8,8 +8,6 @@ import nowpass.element
 import nowpass.engine
 import nowpass.main_config
 import errno
-import time
-import configparser
 
 try:
     sys.setdefaultencoding('UTF8')
@@ -64,8 +62,8 @@ def main():
     config = main_config.get_config()
 
     # Passphrase (stored or via input)
-    if config['Encryption']['Passphrase'] == '':
-        config['Encryption']['Passphrase'] = input('Enter your pass phrase: ')
+    if config['Encryption']['passphrase'] == '':
+        config['Encryption']['passphrase'] = input('Enter your pass phrase: ')
 
     # Starting here we need a command
     if args.command is None:

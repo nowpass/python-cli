@@ -14,7 +14,6 @@ class AESCipher(object):
     def __init__(self, key):
         self.bs = 32
         self.key = hashlib.sha256(AESCipher.str_to_bytes(key)).digest()
-        print(len(self.key))
 
     @staticmethod
     def str_to_bytes(data):

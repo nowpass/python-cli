@@ -17,12 +17,16 @@ class MainConfig:
         return os.path.isfile(self._path)
 
     """First time configuration"""
-    def configure(self):
-        print('nowpass main.cfg not found - First time setup')
 
-        server_url = input('nowpass API server [http://localhost:1337] ') or 'http://localhost:1337'
-        username = input('nowpass Username: ')
-        password = input('nowpass Password: ')
+    def configure(self):
+        print('No configuration found for NOWPASS - First time setup')
+
+        server_url = input('NOWPASS API server [http://localhost:1337] ') or 'http://localhost:1337'
+        username = input('Username (Email): ')
+
+        print('Next your API-Key is needed, you can find it in the settings of your user account on the API server.')
+
+        api_key = input('API-Key: ')
 
         # Ask if they want to store the pass phrase
         passphrase = ''
@@ -30,31 +34,27 @@ class MainConfig:
 
         if store_passphrase.lower() == 'y':
             print('Next we are going to set up your STRONG pass phrase, to encrypt and decrypt your passwords locally.')
-            print('Note: The API server never receives unencrypted passwords, so when you loose it you can\'t restore your passwords.')
+            print('Note: The API server never receives unencrypted passwords, so when you loose it, you can\'t restore your passwords.')
             print('If you already stored passwords on the API server, please use your existing pass phrase.')
 
-            passphrase = input('nowpass pass phrase: ')
+            passphrase = input('Pass phrase: ')
 
         config = configparser.RawConfigParser()
         config['API'] = {
-            'Url': server_url,
-            'Username': username,
-            'Password': password
+            'url': server_url,
+            'username': username,
+            'api_key': api_key
         }
 
         config['Encryption'] = {
-            'Passphrase': passphrase,
-            'StorePassphrase': store_passphrase
-        }
-
-        config['Cookie'] = {
-            'sid': ''
+            'passphrase': passphrase,
+            'store_passphrase': store_passphrase
         }
 
         config['Generator'] = {
-            'Length': 12,
-            'includeNumbers': 'y',
-            'includeSpecial': 'y'
+            'length': 13,
+            'include_numbers': 'y',
+            'include_special': 'y'
         }
 
         # Store the result in the configfile
