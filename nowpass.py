@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 import sys
@@ -68,7 +68,7 @@ def main():
     # Starting here we need a command
     if args.command is None:
         print('Please supply a command, check --help for more details.')
-        exit(0)
+        exit(1)
 
     command = args.command
 
@@ -84,7 +84,7 @@ def main():
 
 
 def create_storage_folder(path):
-    try:
+    try:[]
         os.makedirs(path)
     except OSError as exception:
         if exception.errno != errno.EEXIST:

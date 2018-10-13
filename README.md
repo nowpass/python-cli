@@ -1,6 +1,6 @@
 # NOWPASS Command Line Client
 
-> Please note that NOWPASS is currently in an early alpha stage and not ready for productive use.
+> Please note that NOWPASS is currently in an early alpha stage.
 
 This is the python based command line client of the Open Source NOWPASS password manager.
 
@@ -11,11 +11,12 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-Required software:
+Required software / modules:
 
-* Python 3.x and the following modules
-* Python requests module
-* [Python Terminaltables >= 3.0](https://pypi.python.org/pypi/terminaltables)
+* Python 3.x and the following modules:
+* Requests 
+* [Terminaltables >= 3.0](https://pypi.python.org/pypi/terminaltables)
+* Pycrypto Module
 
 ### Installing
 
@@ -23,6 +24,10 @@ Clone the project and install all dependencies needed to run the application (Wi
 
 ```bash
 git clone --depth 1 https://github.com/nowpass/python-cli
+```
+
+```
+pip3 install requests terminaltables pycrypto
 ```
 
 If you want to use your own [NOWPASS API server](https://github.com/nowpass/server) you need to start it. 
@@ -78,7 +83,7 @@ Optional arguments:
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/nowpass/vue-frontend/tags). 
+NOWPASS uses [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/nowpass/python-cli/tags). 
 
 ## License
 
