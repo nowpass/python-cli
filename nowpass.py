@@ -84,7 +84,7 @@ def main():
 
 
 def create_storage_folder(path):
-    try:[]
+    try:
         os.makedirs(path)
     except OSError as exception:
         if exception.errno != errno.EEXIST:
